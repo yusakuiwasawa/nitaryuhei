@@ -22,7 +22,7 @@ top_hit = BeautifulSoup(top_hit.text, "html.parser")
 serch_result = top_hit.select('.r > a')
 print(serch_result)
 """
-
+#検索したいwordを入れる
 word = "岩澤優作"
 #google検索をする準備
 driver = webdriver.Chrome()
@@ -31,3 +31,25 @@ search = driver.find_element_by_name('q')
 search.send_keys(word)
 search.submit()
 time.sleep(1)
+
+def url_get(driver):
+    tophit_url = []      #とりあえず、Hitしたurlの格納先を作っておく
+    loop = 1             #loopした回数を記録するもの
+    max_loop = 1         #最大のループ回数今回は1
+    #タイトルとリンクはclass="r"に入っているらしい？だめなら→gでやる
+    class_group = driver.find_elements_by_class_name('r')
+    #そのうちのリンクを1番上だけ取得してみる
+    for elem in class_group:
+        tophit_url.append(elem.find_element_by_tag_name('a').get_attribute('href'))
+        if loop == max_loop :
+            continue
+        else:
+            loop += 1
+    return tophit_url
+
+print(url_get(driver))            
+
+    
+
+
+
